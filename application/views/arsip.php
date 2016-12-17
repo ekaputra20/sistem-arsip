@@ -12,7 +12,7 @@
     <div class="row-baru">
         <ol class="breadcrumb">
             <li class=""><a href="<?php echo site_url('admin'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li class="active"><i class="fa fa-archive"></i> Daftar Arsip Kegiatan</li>
+            <li class="active"><i class="fa fa-archive"></i> Daftar Arsip </li>
         </ol>
 <!--        <div class="col-lg-12">
             <h1 class="page-header">Daftar Barang</h1>
@@ -29,7 +29,7 @@
                     
                     <div class="clearfix">
                         <div class="pull-left" style="font-size:30px;">
-                            Daftar Arsip Kegiatan
+                            Daftar Arsip
                         </div>
                         <div class="pull-right" style="margin-bottom: auto;">
                             <a class="btn btn-lg btn-primary btn-outline pull-right" href="#modalAddArsip" data-toggle="modal">
