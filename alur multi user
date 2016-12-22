@@ -1,0 +1,58 @@
+//controller
+
+public function login() {
+	$data=array(
+		'username'=>$this->input->post('username'), //perintah mengambil data username dg metod post
+		'password'=>md5($this->input->post('password')),
+	);
+	
+	$this->load->model('m_admin');
+	$cekAdmin = $this->m_admin->login($data);
+
+	$this->load->model('m_peminjam');
+	$cekUser = $this->m_peminjam->login($data);
+	
+	$data['status'] = '';
+
+	if($cekAdmin['baris_data']>0) {
+		$this->session->set_userdata('statusLogin',true);
+		$this->session->set_userdata('kategoriUser',$cekAdmin['data_login']['level']);
+		$this->session->set_userdata('fotoUser',$cekAdmin['data_login']['foto']);
+		$this->session->set_userdata('idUser',$cekAdmin['data_login']['id_admin']);//ngambil model sekaligus fungsi yang dirujuk di dalem model itu
+		$this->session->set_userdata('username',$cekAdmin['data_login']['username']);
+		$this->session->set_userdata('nama',$cekAdmin['data_login']['nama']);
+		redirect(base_url().'index.php/pengelola/home');
+	} else if($cekUser['baris_data']>0) {
+		$this->session->set_userdata('statusLogin',true);
+		$this->session->set_userdata('kategoriUser', $cekUser['data_login']['level']);
+		$this->session->set_userdata('fotoUser', $cekUser['data_login']['foto']);
+		$this->session->set_userdata('idUser',$cekUser['data_login']['id_peminjam']);
+		$this->session->set_userdata('username',$cekUser['data_login']['username']);
+		$this->session->set_userdata('nama',$cekUser['data_login']['nama_peminjam']);
+		redirect(base_url().'index.php/peminjam/home');
+	} else {
+		$this->session->set_flashdata('pesan','Maaf username dan password salah');
+		redirect(base_url().'index.php/home');
+	}
+
+	//m_admin
+
+	public function login($param=array()) {
+	$this->db->select('id_admin,username,password,level,foto, nama')
+			->where('username',$param['username']) //untuk mengambil data username yang di lempar dari controller
+			->where('password',$param['password'])
+			->from($this->tabel);
+	$query = $this->db->get(); //eksekusi
+	//fungsi untuk mengambil baris data
+	$kirim = array('baris_data'=>$query->num_rows(), 'data_login'=>$query->row_array());
+	return $kirim;
+	}
+
+	public function cekAdmin($username)
+	{
+		$this->db->where('username',$username);
+		return $this->db->get('admin');
+	}	
+
+	//view
+	
